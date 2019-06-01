@@ -10,7 +10,7 @@ import sys
 import time
 import yaml
 
-AWS_CONF_PATH="glacier_config.yaml"
+AWS_CONF_PATH="conf/glacier_config.yaml"
 config = Config(connect_timeout=50, read_timeout=70)
 session = Session()
 # There will be a line of debug log for this
@@ -23,9 +23,6 @@ print('\n\n'
 hist = gl.get_history('history.p')
 with open(AWS_CONF_PATH) as cfile:
     yaml.load(cfile)
-    #AWS_ACCESS_KEY_ID = 'AKIAIRDTPZKIUEOEO32Q'
-    #AWS_SECRET_ACCESS_KEY='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'
-
 
 def timer(start,end):
     hours, rem = divmod(end-start, 3600)
