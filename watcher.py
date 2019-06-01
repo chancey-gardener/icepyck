@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # archive and inventory retrieval for IcePick
-# Gopnik Lab, University of California, Berkeley
+
 
 import time
 import boto3
