@@ -578,7 +578,7 @@ def reporter(uploadout,
 
 
 
-def get_history(pickname dp="tmp/"):
+def get_history(pickname, dp="tmp/"):
     try:
         historiography = open(dp+pickname, 'rb')   # historiography ('history.p') is pickle
     except FileNotFoundError:                       # data file containing a python dictionary containing
