@@ -20,11 +20,11 @@ import yaml
 AWS_CONF_PATH='conf/glacier_config.yaml'
 # read config params from yaml
 with open(AWS_CONF_PATH) as cfile:
-    yaml.load(cfile)
+    params = yaml.safe_load(cfile)
 config = Config(connect_timeout=100, read_timeout=100)
 glacier_client = client('glacier',
-                aws_access_key_id=AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                aws_access_key_id=params['AWS_ACCESS_KEY_ID'],
+                aws_secret_access_key=params['AWS_SECRET_ACCESS_KEY'],
                               config=config)
 session = Session()
 config = Config(connect_timeout=100, read_timeout=100)
@@ -613,9 +613,6 @@ def dict_print(history, title):
                      archid)
         for val in namedate.keys():
             print()
-
-        #print("{} ------ {}".format(key, info))
-    #print('\n','{:^}'.format('______________________________________________'))
 
 
 def save_history(history, filename):

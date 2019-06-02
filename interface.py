@@ -1,15 +1,15 @@
-# /usr/bin/python3
+#!/usr/bin/python3
 # Icepyck interface for Amazon Glacier.
 
-from time import time
-zero = time()
-print('loading libraries...\n')
+#from time import time
+#zero = time()
+#print('loading libraries...\n')
 import glacier_uploader as gl
 from os import path, getcwd
 import multiprocessing as mp
 
-one=time()
-print('took {} seconds to load libraries'.format(gl.timer(zero, one)))
+#one=time()
+#print('took {} seconds to load libraries'.format(gl.timer(zero, one)))
 
 
 hist = gl.get_history('history.p') #  returns dict containing histtory

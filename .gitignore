@@ -1,4 +1,4 @@
-glacier_config.yaml
+conf/*
 *.swp
 *.swo
 
