@@ -582,8 +582,7 @@ def get_history(pickname, dp="tmp/"):
     try:
         historiography = open(dp+pickname, 'rb')   # historiography ('history.p') is pickle
     except FileNotFoundError:                       # data file containing a python dictionary containing
-        print('No prior history found for {}'.format(pickname))  
-        historiography.close()              # request history data organized by file name
+        print('No prior history found for {}'.format(pickname)) # request history data organized by file name
         history = []
         return history
 
