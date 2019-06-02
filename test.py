@@ -29,9 +29,11 @@ def timer(start,end):
     minutes, seconds = divmod(rem, 60)
     return "{:0>2}:{:0>2}:{:05.8f}".format(int(hours),int(minutes),seconds)
 
+
+# TODO: replace unix split with python version. parameters not consistent across platforms
 def unxplit(filename, bytes_per_file, opref):
-    system('split -a 4 -b {} {} {}'.format(str(bytes_per_file), filename, opref))
-    outfiles = [f for f in listdir(getcwd()) if f.startswith(opref)]
+    system('split -a 4 -b {} {}'.format(str(bytes_per_file), filename))
+    outfiles = [opref+f for f in listdir(getcwd()) if f.startswith(opref)]
     return outfiles
 
 

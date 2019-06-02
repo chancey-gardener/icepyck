@@ -98,9 +98,9 @@ def read_in_chunks(file, chunksize=3):
 
 
 
-def unxplit(filename, bytes_per_file, opref):
-    system('split -a 4 -b {} {} {}'.format(str(bytes_per_file), filename, opref))
-    outfiles = [f for f in listdir(getcwd()) if f.startswith(opref)]
+def unxplit(filename, bytes_per_file, opref, tdir="tmp/"):
+    system("split -a 4 -b {} '{}'".format(str(bytes_per_file), filename))
+    outfiles = [tdir+opref+f for f in listdir(tdir) if f.startswith(opref)]
     return outfiles
 
 def trash(prefix):
@@ -176,8 +176,11 @@ def mpUpload(fname,
             of = len(filist)
 
 
-            #if of != partcount:
-            #    print('of doesnt equal partcount...')
+            if of != partcount:
+                print('of: {} doesnt equal partcount: {}...'.format(of, partcount))
+                trash(PART_PREFIX)
+                sys.exit()
+
             totrange = 0
             #response = []
 
@@ -238,7 +241,6 @@ def mpUpload(fname,
 
                 uploaded = glacier_client.list_parts(vaultName=vault,
                                                      uploadId=upid)['Parts']
-                # many are mysteriously not uploading?
                 while len(uploaded) < len(all_params):
                     #  check to see if all parts have uploaded
                     print('time: {}'.format(timer(postplit, time.time())))
@@ -449,7 +451,7 @@ def retrieval_request(vault,
     retrlog.append(doc)
 
 # notify user of completion
-    job = glacier.Job(id=jobid, vault_name=vault, account_id=ACCOUNT_ID)
+    job = glacier.Job(id=jobid, vault_name=vault, account_id=params['ACCOUNT_ID'])
     print('retrieval request received, job ID: {}'.format(doc['jobId']))
     print("""{} should appear in the folder IcePick/retrievals within
     the next 3-12 hours. Keep this window open, Icepick is checking the
@@ -576,11 +578,12 @@ def reporter(uploadout,
 
 
 
-def get_history(pickname):
+def get_history(pickname dp="tmp/"):
     try:
-        historiography = open(pickname, 'rb')   # historiography ('history.p') is pickle
+        historiography = open(dp+pickname, 'rb')   # historiography ('history.p') is pickle
     except FileNotFoundError:                       # data file containing a python dictionary containing
-        print('No prior history found for {}'.format(pickname))                 # request history data organized by file name
+        print('No prior history found for {}'.format(pickname))  
+        historiography.close()              # request history data organized by file name
         history = []
         return history
 
@@ -591,6 +594,7 @@ def get_history(pickname):
 
     except EOFError:
         print('history file was unreadable.')
+        historiography.close()
         history = []
         return history
 
@@ -646,7 +650,7 @@ if __name__ == '__main__':
     testvault = 'FrontEndTest'
 
 
-    mpUpload(fname=fooname,acctid=ACCOUNT_ID,hrglass=':-)',vault=testvault, desc='test for upload correction scheme XII-medfile')
+    mpUpload(fname=fooname,acctid=params['ACCOUNT_ID'],hrglass=':-)',vault=testvault, desc='test for upload correction scheme XII-medfile')
     #job = glacier.Job(account_id=ACCOUNT_ID, id='hCyAbBooy0A3b4NsEzdxijBWmnEpzAC563RHqhcUu-_uZKN-CZhZLtaxM2_1Gkbqf28yqamJXSS0X6L_Mq9RAWxdF1uY',
     #                  vault_name='FrontEndTest')
     #this = retrieve(job=job,arc=True,fname='degroot-retrieved.pdf')

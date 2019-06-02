@@ -3,7 +3,7 @@
 
 #from time import time
 #zero = time()
-#print('loading libraries...\n')
+print('loading libraries...\n')
 import glacier_uploader as gl
 from os import path, getcwd
 import multiprocessing as mp
@@ -145,8 +145,9 @@ def upload():
     ULconfirm= yesno(confirm,
                      '(Y)es to upload archive or (N)o to cancel')
     if ULconfirm is True:
+        print("should be executing mpupload...")
         upresponse = gl.mpUpload(fname=filename,
-                                 acctid=gl.ACCOUNT_ID,
+                                 acctid=gl.params['ACCOUNT_ID'],
                                  vault=vaultname,
                                  desc=desc,
                                  hrglass=waiting)
@@ -419,5 +420,5 @@ if __name__ == "__main__":
                     'history.p')
     gl.save_history(retrhist,
                     'retrhist.p')
-    print(hist)
-    print(retrhist)
+    #print(hist)
+    #print(retrhist)
